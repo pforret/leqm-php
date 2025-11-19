@@ -16,19 +16,19 @@ class LeqmPhp
 
     public function measure(string $audioFile): LeqmResult
     {
-        if (!file_exists($audioFile)) {
+        if (! file_exists($audioFile)) {
             throw new MeasurementException("Audio file not found: $audioFile");
         }
 
-        $command = escapeshellarg($this->binaryPath) . ' ' . escapeshellarg($audioFile);
+        $command = escapeshellarg($this->binaryPath).' '.escapeshellarg($audioFile);
 
         $output = [];
         $returnCode = 0;
-        exec($command . ' 2>&1', $output, $returnCode);
+        exec($command.' 2>&1', $output, $returnCode);
 
         if ($returnCode !== 0) {
             throw new MeasurementException(
-                "Binary execution failed with code $returnCode: " . implode("\n", $output)
+                "Binary execution failed with code $returnCode: ".implode("\n", $output)
             );
         }
 
@@ -37,7 +37,7 @@ class LeqmPhp
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new MeasurementException(
-                "Failed to parse JSON output: " . json_last_error_msg() . "\nOutput: $jsonOutput"
+                'Failed to parse JSON output: '.json_last_error_msg()."\nOutput: $jsonOutput"
             );
         }
 
@@ -51,23 +51,23 @@ class LeqmPhp
 
     private function detectBinary(): string
     {
-        $binDir = dirname(__DIR__) . '/bin';
+        $binDir = dirname(__DIR__).'/bin';
         $binary = match (PHP_OS_FAMILY) {
             'Darwin' => php_uname('m') === 'arm64' ? 'goqm_macos_arm' : 'goqm_macos',
             'Linux' => 'goqm_linux',
             'Windows' => 'goqm_win.exe',
-            default => throw new BinaryNotFoundException("Unsupported OS: " . PHP_OS_FAMILY),
+            default => throw new BinaryNotFoundException('Unsupported OS: '.PHP_OS_FAMILY),
         };
 
-        $path = $binDir . '/' . $binary;
+        $path = $binDir.'/'.$binary;
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             throw new BinaryNotFoundException(
                 "Binary not found: $path. Run bin/download-goqm.sh to download binaries."
             );
         }
 
-        if (!is_executable($path) && PHP_OS_FAMILY !== 'Windows') {
+        if (! is_executable($path) && PHP_OS_FAMILY !== 'Windows') {
             throw new BinaryNotFoundException("Binary is not executable: $path");
         }
 

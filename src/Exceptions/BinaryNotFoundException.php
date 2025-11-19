@@ -2,6 +2,4 @@
 
 namespace Pforret\LeqmPhp\Exceptions;
 
-class BinaryNotFoundException extends LeqmException
-{
-}
+class BinaryNotFoundException extends LeqmException {}

@@ -2,6 +2,4 @@
 
 namespace Pforret\LeqmPhp\Exceptions;
 
-class MeasurementException extends LeqmException
-{
-}
+class MeasurementException extends LeqmException {}

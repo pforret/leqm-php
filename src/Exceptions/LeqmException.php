@@ -4,6 +4,4 @@ namespace Pforret\LeqmPhp\Exceptions;
 
 use Exception;
 
-class LeqmException extends Exception
-{
-}
+class LeqmException extends Exception {}
