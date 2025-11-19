@@ -30,9 +30,21 @@ composer lint
 ### Core Classes
 
 - **LeqmPhp** (`src/LeqmPhp.php`) - Main class that detects OS, selects binary, executes measurement
-- **LeqmResult** (`src/LeqmResult.php`) - Result object with accessors for all JSON fields (metadata, measurements, channel stats, execution info)
+- **LeqmResult** (`src/LeqmResult.php`) - Readonly DTO with nested DTOs for structured access
 
-### Exceptions
+### DTO Classes (`src/DTO/`)
+
+- **Metadata** - File info (file, sampleRate, channels, frames, durationSeconds)
+- **Measurements** - Loudness values (leqM, leqNoWeight, meanPower, meanPowerWeighted)
+- **ChannelStat** - Per-channel stats (channel, peakDb, averageDb)
+- **Execution** - Processing info (binaryPath, binaryVersion, executionSeconds, speedIndex, mbps)
+
+All DTOs are `readonly` classes with:
+- Public properties for direct access
+- Static `fromArray()` factory methods
+- `toArray()` serialization methods
+
+### Exceptions (`src/Exceptions/`)
 
 - **LeqmException** - Base exception
 - **BinaryNotFoundException** - Binary not found or not executable
@@ -65,12 +77,22 @@ Each has a corresponding `.md` file with ffprobe and goqm output.
 ## Key Concepts
 
 ### LEQ(m) Measurement Output
-- `leq_m`: Main loudness measurement in dB (M-weighted)
-- `leq_no_weight`: Unweighted Leq in dB
-- `mean_power` / `mean_power_weighted`: Power values
-- `channel_stats`: Array with peak_db and average_db per channel
-- `metadata`: File info (duration, sample rate, channels, frames)
-- `execution`: Processing time, binary version, speed index
+
+Access via DTO properties:
+```php
+$result->measurements->leqM;           // Main loudness in dB
+$result->measurements->leqNoWeight;    // Unweighted Leq
+$result->metadata->durationSeconds;    // Duration
+$result->channelStats[0]->peakDb;      // Channel peak
+$result->execution->binaryVersion;     // Binary version
+```
+
+Or convenience getters:
+```php
+$result->getLeqM();
+$result->getDuration();
+$result->getChannelPeakDb(0);
+```
 
 ## Documentation
 

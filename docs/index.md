@@ -4,7 +4,7 @@ PHP library for LEQ(m) audio loudness measurement using the goqm binary.
 
 ## Requirements
 
-- PHP 8.1+
+- PHP 8.2+ (uses readonly classes)
 - One of the supported platforms: macOS (Intel/ARM), Linux, or Windows
 
 ## Installation
@@ -35,33 +35,36 @@ echo "Duration: " . $result->getDuration() . " seconds\n";
 
 ### Accessing Measurements
 
+The result is returned as a DTO with public readonly properties:
+
 ```php
 $result = $leqm->measure('/path/to/audio.wav');
 
-// Main loudness values
-$result->getLeqM();              // Leq(M) weighted loudness in dB
-$result->getLeqNoWeight();       // Unweighted Leq in dB
-$result->getMeanPower();         // Mean power
-$result->getMeanPowerWeighted(); // Mean power (weighted)
+// Direct property access (recommended)
+$result->measurements->leqM;           // Leq(M) weighted loudness in dB
+$result->measurements->leqNoWeight;    // Unweighted Leq in dB
+$result->measurements->meanPower;      // Mean power
+$result->measurements->meanPowerWeighted;
 
-// File metadata
-$result->getFile();              // File path
-$result->getDuration();          // Duration in seconds
-$result->getSampleRate();        // Sample rate in Hz
-$result->getChannels();          // Number of channels
-$result->getFrames();            // Total frames
+$result->metadata->file;               // File path
+$result->metadata->durationSeconds;    // Duration in seconds
+$result->metadata->effectiveSampleRate; // Sample rate in Hz
+$result->metadata->channels;           // Number of channels
+$result->metadata->frames;             // Total frames
 
-// Channel statistics
-$result->getChannelStats();      // Array of all channel stats
-$result->getChannelPeakDb(0);    // Peak dB for channel 0
-$result->getChannelAverageDb(1); // Average dB for channel 1
+$result->channelStats[0]->peakDb;      // Peak dB for channel 0
+$result->channelStats[0]->averageDb;   // Average dB for channel 0
 
-// Execution info
-$result->getExecutionTime();     // Processing time in seconds
-$result->getBinaryVersion();     // goqm version
-$result->getSpeedIndex();        // Processing speed index
+$result->execution->executionSeconds;  // Processing time
+$result->execution->binaryVersion;     // goqm version
+$result->execution->speedIndex;        // Processing speed index
 
-// Raw data
+// Convenience getter methods also available
+$result->getLeqM();
+$result->getDuration();
+$result->getChannelPeakDb(0);
+
+// Serialization
 $result->toArray();              // Full result as array
 $result->toJson();               // Full result as JSON string
 ```
@@ -109,28 +112,53 @@ The goqm binary supports WAV files with various configurations:
 | `measure(string $audioFile): LeqmResult` | Measure audio file and return results |
 | `getBinaryPath(): string` | Get the path to the goqm binary |
 
-### LeqmResult
+### LeqmResult (DTO)
 
-| Method | Return Type | Description |
-|--------|-------------|-------------|
-| `getLeqM()` | `float` | Leq(M) weighted loudness in dB |
-| `getLeqNoWeight()` | `float` | Unweighted Leq in dB |
-| `getMeanPower()` | `float` | Mean power |
-| `getMeanPowerWeighted()` | `float` | Weighted mean power |
-| `getFile()` | `string` | Audio file path |
-| `getDuration()` | `float` | Duration in seconds |
-| `getSampleRate()` | `int` | Sample rate in Hz |
-| `getOriginalSampleRate()` | `int` | Original sample rate |
-| `getChannels()` | `int` | Number of channels |
-| `getFrames()` | `int` | Total frames |
-| `getChannelStats()` | `array` | All channel statistics |
-| `getChannelPeakDb(int $channel)` | `float` | Peak dB for channel |
-| `getChannelAverageDb(int $channel)` | `float` | Average dB for channel |
-| `getExecutionTime()` | `float` | Processing time in seconds |
-| `getBinaryVersion()` | `string` | goqm version |
-| `getSpeedIndex()` | `float` | Processing speed index |
-| `toArray()` | `array` | Full result as array |
-| `toJson()` | `string` | Full result as JSON |
+LeqmResult is a readonly DTO with the following public properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `metadata` | `Metadata` | File metadata |
+| `measurements` | `Measurements` | Loudness measurements |
+| `channelStats` | `array<ChannelStat>` | Per-channel statistics |
+| `execution` | `Execution` | Execution info |
+| `referenceOffsetDb` | `float` | Reference offset in dB |
+
+### DTO Classes
+
+#### Metadata
+| Property | Type | Description |
+|----------|------|-------------|
+| `file` | `string` | Audio file path |
+| `originalSampleRate` | `int` | Original sample rate in Hz |
+| `effectiveSampleRate` | `int` | Effective sample rate in Hz |
+| `channels` | `int` | Number of channels |
+| `frames` | `int` | Total frames |
+| `durationSeconds` | `float` | Duration in seconds |
+
+#### Measurements
+| Property | Type | Description |
+|----------|------|-------------|
+| `leqM` | `float` | Leq(M) weighted loudness in dB |
+| `leqNoWeight` | `float` | Unweighted Leq in dB |
+| `meanPower` | `float` | Mean power |
+| `meanPowerWeighted` | `float` | Weighted mean power |
+
+#### ChannelStat
+| Property | Type | Description |
+|----------|------|-------------|
+| `channel` | `int` | Channel index |
+| `peakDb` | `float` | Peak level in dB |
+| `averageDb` | `float` | Average level in dB |
+
+#### Execution
+| Property | Type | Description |
+|----------|------|-------------|
+| `binaryPath` | `string` | Path to binary |
+| `binaryVersion` | `string` | Binary version |
+| `executionSeconds` | `float` | Processing time |
+| `speedIndex` | `float` | Speed index |
+| `mbps` | `float` | Megabytes per second |
 
 ### Exceptions
 
