@@ -63,7 +63,7 @@ class LeqmPhp
 
         if (! file_exists($path)) {
             throw new BinaryNotFoundException(
-                "Binary not found: $path. Run bin/download-goqm.sh to download binaries."
+                "Binary not found: $path. Package may be incomplete."
             );
         }
 

@@ -13,11 +13,7 @@ PHP library for LEQ(m) audio loudness measurement using the goqm binary.
 composer require pforret/leqm-php
 ```
 
-After installation, download the goqm binaries:
-
-```bash
-./vendor/pforret/leqm-php/bin/download-goqm.sh
-```
+The goqm binaries for all platforms are included in the package.
 
 ## Usage
 

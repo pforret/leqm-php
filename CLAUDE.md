@@ -17,8 +17,12 @@ composer test
 
 # Run code style fixer
 composer lint
+```
 
-# Download goqm binaries
+### Maintainer Only
+
+```bash
+# Update goqm binaries from upstream (maintainer only)
 ./bin/download-goqm.sh
 ```
 
@@ -56,15 +60,17 @@ LeqmPhp auto-detects the correct binary based on:
 - `PHP_OS_FAMILY`: Darwin, Linux, Windows
 - `php_uname('m')`: arm64 vs x86_64 for macOS
 
-Binaries in `bin/`:
+Binaries included in `bin/`:
 - `goqm_macos_arm` - macOS ARM (M1/M2)
 - `goqm_macos` - macOS Intel
 - `goqm_linux` - Linux
 - `goqm_win.exe` - Windows
 
+Binaries are committed to the repo and distributed with the package.
+
 ## Testing
 
-Tests use Pest framework and require goqm binaries to be downloaded first.
+Tests use Pest framework. Binaries must be present in `bin/`.
 
 Test files in `media/`:
 - `test1.wav` - Stereo 16-bit

@@ -5,7 +5,7 @@ use Pforret\LeqmPhp\LeqmPhp;
 use Pforret\LeqmPhp\LeqmResult;
 
 beforeAll(function () {
-    // Ensure binaries are downloaded
+    // Ensure binaries are present
     $binDir = dirname(__DIR__, 2).'/bin';
     $binaries = ['goqm_linux', 'goqm_macos', 'goqm_macos_arm', 'goqm_win.exe'];
     $hasBinary = false;
@@ -19,7 +19,7 @@ beforeAll(function () {
 
     if (! $hasBinary) {
         throw new RuntimeException(
-            'No goqm binaries found. Run bin/download-goqm.sh first.'
+            'No goqm binaries found in bin/. Repository may be incomplete.'
         );
     }
 });
