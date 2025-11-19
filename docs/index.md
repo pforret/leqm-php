@@ -4,7 +4,7 @@ PHP library for LEQ(m) audio loudness measurement using the goqm binary.
 
 ## Requirements
 
-- PHP 8.2+ (uses readonly classes)
+- PHP 8.1+
 - One of the supported platforms: macOS (Intel/ARM), Linux, or Windows
 
 ## Installation
@@ -31,7 +31,7 @@ echo "Duration: " . $result->getDuration() . " seconds\n";
 
 ### Accessing Measurements
 
-The result is returned as a DTO with public readonly properties:
+The result is returned as a DTO with public properties:
 
 ```php
 $result = $leqm->measure('/path/to/audio.wav');
@@ -110,7 +110,7 @@ The goqm binary supports WAV files with various configurations:
 
 ### LeqmResult (DTO)
 
-LeqmResult is a readonly DTO with the following public properties:
+LeqmResult is a DTO with the following public properties:
 
 | Property | Type | Description |
 |----------|------|-------------|

@@ -43,7 +43,7 @@ composer lint
 - **ChannelStat** - Per-channel stats (channel, peakDb, averageDb)
 - **Execution** - Processing info (binaryPath, binaryVersion, executionSeconds, speedIndex, mbps)
 
-All DTOs are `readonly` classes with:
+All DTOs have:
 - Public properties for direct access
 - Static `fromArray()` factory methods
 - `toArray()` serialization methods

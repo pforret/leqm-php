@@ -2,7 +2,7 @@
 
 namespace Pforret\LeqmPhp\DTO;
 
-readonly class ChannelStat
+class ChannelStat
 {
     public function __construct(
         public int $channel,

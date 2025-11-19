@@ -2,7 +2,7 @@
 
 namespace Pforret\LeqmPhp\DTO;
 
-readonly class Metadata
+class Metadata
 {
     public function __construct(
         public string $file,

@@ -7,7 +7,7 @@ use Pforret\LeqmPhp\DTO\Execution;
 use Pforret\LeqmPhp\DTO\Measurements;
 use Pforret\LeqmPhp\DTO\Metadata;
 
-readonly class LeqmResult
+class LeqmResult
 {
     public Metadata $metadata;
 

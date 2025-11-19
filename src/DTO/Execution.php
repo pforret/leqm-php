@@ -2,7 +2,7 @@
 
 namespace Pforret\LeqmPhp\DTO;
 
-readonly class Execution
+class Execution
 {
     public function __construct(
         public string $binaryPath,

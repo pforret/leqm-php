@@ -2,7 +2,7 @@
 
 namespace Pforret\LeqmPhp\DTO;
 
-readonly class Measurements
+class Measurements
 {
     public function __construct(
         public float $leqM,
