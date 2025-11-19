@@ -1,3 +1,6 @@
+![Static Badge](https://img.shields.io/badge/PHP-8.1-blue)
+![GitHub Tag](https://img.shields.io/github/v/tag/pforret/leqm-php)
+
 # pforret/leqm-php
 
 PHP library for LEQ(m) audio loudness measurement using the goqm binary.
