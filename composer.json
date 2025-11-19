@@ -1,0 +1,19 @@
+{
+    "name": "pforret/leqm-php",
+    "description": "PHP Package to do audio measurement/correction with leqm/goqm",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Pforret\\LeqmPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Peter Forret",
+            "email": "peter@forret.com"
+        }
+    ],
+    "require-dev": {
+        "laravel/pint": "^1.25"
+    }
+}
